@@ -28,7 +28,36 @@ class View(object):
 
         # Add your stuff here
 
-        self.page.add([])
+        #Row 1
+        self.t = ft.Text(value='')
+        self._ddLanguage = ft.Dropdown(label="Select the language",
+                                       width=self.page.width,
+                                       on_change=self.__controller.handleLanguageSelection
+                                       )
+        self._fillDdLanguage()
+
+        r1 = ft.Row([self._ddLanguage],width=self.page.width)
+
+        #Row 2
+        self.t2 = ft.Text(text_align=ft.TextAlign.RIGHT)
+        self._ddSearchType = ft.Dropdown(label="Select the type of your search",
+                                         width=300,
+                                         options=[ft.dropdown.Option("Default"),
+                                                  ft.dropdown.Option("Linear"),
+                                                  ft.dropdown.Option("Dicotomic")],
+                                         on_change=self.__controller.handleSearchType)
+        self._txtIn = ft.TextField(label="your text", hint_text="Please enter the text here",
+                                  width=600, on_submit=self.__controller.handleSpellCheck)
+
+        self._btnInput = ft.ElevatedButton(text="Submit", on_click=self.__controller.handleSpellCheck)
+
+        r2 = ft.Row([self._ddSearchType,self._txtIn,self._btnInput])
+
+        #Row 3
+
+        self._lvOut = ft.ListView()
+
+        self.page.add(r1,self.t,r2,self.t2,self._lvOut)
 
         self.page.update()
 
@@ -51,3 +80,9 @@ class View(object):
         #     ft.colors.GREY_900 if self.page.theme_mode == ft.ThemeMode.DARK else ft.colors.GREY_300
         # )
         self.page.update()
+
+    def _fillDdLanguage(self):
+        self._ddLanguage.options.append((ft.dropdown.Option("English")))
+        self._ddLanguage.options.append((ft.dropdown.Option("Italian")))
+        self._ddLanguage.options.append((ft.dropdown.Option("Spanish")))
+

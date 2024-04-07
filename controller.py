@@ -56,9 +56,44 @@ class SpellChecker:
               "4. Exit\n" +
               "______________________________\n")
 
+    def handleLanguageSelection(self, e):
+        self._view.t.value = f"the selected language is {self._view._ddLanguage.value}"
+        self._view.update()
 
+    def handleSearchType(self,e):
+        self._view.t2.value = f"The search type selected is {self._view._ddSearchType.value}"
+        self._view.update()
+
+    def handleSpellCheck(self,e):
+
+        lan = self._view._ddLanguage.value
+        if lan == "":
+            self._view._lvOut.controls.append(ft.Text("You must select a language", color='red'))
+            self._view.update()
+            return
+
+        searchType = self._view._ddSearchType.value
+        if searchType == "":
+            self._view._lvOut.controls.append(ft.Text("You must select a  search's type", color='red'))
+            self._view.update()
+            return
+
+        toCorrect = self._view._txtIn.value
+        if toCorrect == "":
+            self._view._lvOut.controls.append(ft.Text("You must submit a text", color='red'))
+            self._view.update()
+            return
+
+        (wrongWords, exTime) = self.handleSentence(toCorrect,lan,searchType)
+        self._view._lvOut.controls.append(ft.Text(f"The text to be corrected is: {toCorrect}"))
+        self._view._lvOut.controls.append(ft.Text(wrongWords))
+        self._view._lvOut.controls.append(ft.Text())
+
+        self._view._txtIn.value = ""
+        self._view.update()
 def replaceChars(text):
     chars = "\\`*_{}[]()>#+-.!$?%^;,=_~"
     for c in chars:
         text = text.replace(c, "")
     return text
+
